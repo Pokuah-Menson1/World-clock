@@ -26,6 +26,21 @@ function updateParisTime() {
 updateParisTime();
 setInterval(updateParisTime, 1000);
 
+function updateFijiTime() {
+  let FijiElement = document.querySelector("#fiji");
+  if (FijiElement) {
+    let FijiDateElement = FijiElement.querySelector(".date");
+    let FijiTimeElement = FijiElement.querySelector(".time");
+    let FijiTime = moment().tz("Pacific/Fiji");
+    FijiDateElement.innerHTML = FijiTime.format("MMMM Do,YYYY");
+    FijiTimeElement.innerHTML = FijiTime.format(
+      "h:mm:ss [<small>]A[</small>] "
+    );
+  }
+}
+updateFijiTime();
+setInterval(updateFijiTime, 1000);
+
 function updateCity(event) {
   let cityTimeZone = event.target.value;
   if (cityTimeZone === "current") {
@@ -34,6 +49,11 @@ function updateCity(event) {
   let cityName = cityTimeZone.split("/")[1].replace("_", " ");
   let cityTime = moment().tz(cityTimeZone);
   let citiesElement = document.querySelector("#cities");
+  let homepage = document.querySelector("#homepage");
+  if (homepage) {
+    homepage.innerHTML = '<a href="index.html">Return to homepage</a>';
+  }
+
   citiesElement.innerHTML = `
         <div class="city" >
           <div class="city-date">
@@ -43,8 +63,13 @@ function updateCity(event) {
           <div class="time">${cityTime.format(
             "h:mm:ss [<small>]A[</small>]"
           )}</div>
-        </div>`;
+        </div>
+        ${homepage.innerHTML}`;
 }
+
+//function toHomePage() {}
+
+//toHomePage();
 
 let citiesSelectElement = document.querySelector("#city");
 citiesSelectElement.addEventListener("change", updateCity);
